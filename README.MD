@@ -23,7 +23,7 @@ native-image_1      | ># /usr/bin/ld: graal-shared-library.o: warning: relocatio
 native-image_1      | ># /usr/bin/ld: warning: creating a DT_TEXTREL in a shared object.
 ```
 
-And latter on the upx command will fail with:
+And later on the upx command will fail with:
 
 ```
 native-image_1      | upx: graal-shared-library.so: CantPackException: DT_TEXTREL found; re-compile with -fPIC
