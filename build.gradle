@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+application {
+    mainClassName 'org.example.ExampleLibrary'
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'org.example.ExampleLibrary'
+        )
+    }
+}
+
+jar {
+    archiveName 'graal-shared-library.jar'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly "org.graalvm.nativeimage:svm:$graalVersion"
+}

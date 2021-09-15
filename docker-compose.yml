@@ -1,0 +1,32 @@
+version: '3.8'
+
+x-native-image: &native-image
+  image: graal-shared-library:latest
+  build:
+    context: .
+    dockerfile: src/main/docker/Dockerfile
+  volumes:
+    - ./:/graal-shared-library
+  working_dir: /graal-shared-library
+
+services:
+
+  native-image:
+    <<: *native-image
+    command:
+      - |
+        source "$$HOME/.sdkman/bin/sdkman-init.sh"
+        gradle clean jar
+        cd build/libs
+        native-image -H:+TraceNativeToolUsage -H:NativeLinkerOption=-Wl,--warn-shared-textrel --shared -jar graal-shared-library.jar graal-shared-library
+        upx graal-shared-library.so
+
+  native-image-pic:
+    <<: *native-image
+    command:
+      - |
+        source "$$HOME/.sdkman/bin/sdkman-init.sh"
+        gradle clean jar
+        cd build/libs
+        native-image -H:+GeneratePIC -H:CCompilerOption=-fPIC -H:+TraceNativeToolUsage -H:NativeLinkerOption=-Wl,--warn-shared-textrel --shared -jar graal-shared-library.jar graal-shared-library
+        upx graal-shared-library.so
